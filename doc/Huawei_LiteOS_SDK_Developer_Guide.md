@@ -631,48 +631,63 @@ typedef struct _data_report_t
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | int   atiny_init(atiny_param_t* atiny_params, void** phandle) | LiteOS SDK端云互通组件的初始化接口，由LiteOS SDK端云互通组件实现，设备调用。<br>参数列表：参数```atiny_params```为入参，包含初始化操作所需的各个变量，具体请参考服务器参数结构体```atiny_param_t```；参数```phandle```为出参，表示当前创建的agent tiny的句柄。<br>返回值：整形变量，标识初始化成功或失败的状态。 |
 
-对于入参```atiny_params```的设定，要根据具体的业务来进行。比如，是否需要加密（打开或关闭宏定义```WITH_DTLS```），等等。若需要加密，则服务器端的接口号```server_port```应设为5684，且需要设置在IoT平台上注册设备时所提供的PSK码；若不需要加密，服务器端的接口号应设为5683，且不需要PSK码。终端设备相关的参数```device_info```需要与IoT平台上注册的设备参数一致，包括设备验证码```g_endpoint_name```（或```g_endpoint_name_s```，取决于是否加密），设备厂商```manufacturer```和设备类型```dev_type```等。服务器相关参数，也需要开发者根据业务需要进行设定，包括服务器地址```server_ip```，LwM2M协议的生命周期```life_time```，缓存数据报文个数```storing_cnt```等等。
+对于入参```atiny_params```的设定，要根据具体的业务来进行。开发者可以参考下面的代码。
 
 ```C
-    UINT32 uwRet = LOS_OK;
-    atiny_param_t* atiny_params;
-    atiny_security_param_t  *security_param = NULL;
-    atiny_device_info_t *device_info = &g_device_info;
-    if(NULL == device_info)
-    {
-        return;
-    }
-#ifdef WITH_DTLS
-    device_info->endpoint_name = g_endpoint_name_s;
-#else
-    device_info->endpoint_name = g_endpoint_name;
+#ifdef CONFIG_FEATURE_FOTA
+    hal_init_ota();   //若定义FOTA功能，则需进行FOTA相关初始化
 #endif
-    device_info->manufacturer = "Huawei";
 
+#ifdef WITH_DTLS
+    device_info->endpoint_name = g_endpoint_name_s;  //加密设备验证码
+#else
+    device_info->endpoint_name = g_endpoint_name;    //非加密设备验证码
+#endif
+#ifdef CONFIG_FEATURE_FOTA
+    device_info->manufacturer = "Lwm2mFota";    //设备厂商
+    device_info->dev_type = "Lwm2mFota";        //设备类型
+#else
+    device_info->manufacturer = "Agent_Tiny";   
+#endif
     atiny_params = &g_atiny_params;
-    atiny_params->server_params.binding = "UQ";
-    atiny_params->server_params.life_time = LWM2M_LIFE_TIME;
-    atiny_params->server_params.storing_cnt = 0;
+    atiny_params->server_params.binding = "UQ";   //绑定方式
+    atiny_params->server_params.life_time = 20;   //生命周期
+    atiny_params->server_params.storing_cnt = 0;  //缓存数据报文个数
 
-    security_param = &(atiny_params->security_params[0]);
-    security_param->is_bootstrap = FALSE;
-    security_param->server_ip = DEFAULT_SERVER_IPV4;
+    atiny_params->server_params.bootstrap_mode = BOOTSTRAP_FACTORY;   //引导模式
+    atiny_params->server_params.hold_off_time = 10;    //等待时延
+
+    //pay attention: index 0 for iot server, index 1 for bootstrap server.
+    iot_security_param = &(atiny_params->security_params[0]);
+    bs_security_param = &(atiny_params->security_params[1]);
+
+
+    iot_security_param->server_ip = DEFAULT_SERVER_IPV4;  //服务器地址
+    bs_security_param->server_ip = DEFAULT_SERVER_IPV4;
+
 #ifdef WITH_DTLS
-    security_param->server_port = "5684";
-    security_param->psk_Id = g_endpoint_name_s;
-    security_param->psk = (char*)g_psk_value;
-    security_param->psk_len = 16;
+    iot_security_param->server_port = "5684";   //加密设备端口号
+    bs_security_param->server_port = "5684";
+
+    iot_security_param->psk_Id = g_endpoint_name_iots;         //加密设备验证码
+    iot_security_param->psk = (char *)g_psk_iot_value;         //PSK码
+    iot_security_param->psk_len = sizeof(g_psk_iot_value);     //PSK码长度
+
+    bs_security_param->psk_Id = g_endpoint_name_bs;
+    bs_security_param->psk = (char *)g_psk_bs_value;
+    bs_security_param->psk_len = sizeof(g_psk_bs_value);
 #else
-    security_param->server_port = "5683";
-    security_param->psk_Id = NULL;
-    security_param->psk = NULL;
-    security_param->psk_len = 0;
+    iot_security_param->server_port = "5683";    //非加密设备端口号
+    bs_security_param->server_port = "5683";
+
+    iot_security_param->psk_Id = NULL;    //非加密设备，无需PSK相关参数设置
+    iot_security_param->psk = NULL;
+    iot_security_param->psk_len = 0;
+
+    bs_security_param->psk_Id = NULL;
+    bs_security_param->psk = NULL;
+    bs_security_param->psk_len = 0;
 #endif
-    //用上面定义的初始化参数进行agent tiny的初始化
-    if(ATINY_OK != atiny_init(atiny_params, &g_phandle))  
-    {
-        return;
-    }
 ```
 
 设定好atiny_params后，即可根据设定的参数对agent tiny进行初始化。对于初始化接口```atiny_init()```内部，主要进行入参合法性的检验，agent tiny所需资源的创建等工作，一般不需要开发者进行修改。
