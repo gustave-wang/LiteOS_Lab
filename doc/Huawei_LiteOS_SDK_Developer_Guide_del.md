@@ -376,7 +376,7 @@ IoT平台提供了Profile模板库，开发者可以根据自己需要，选择�
 
 **新建LightControl服务**
 
-![](./meta/SDKGuide_AgentTiny/58.png)
+![](./meta/SDKGuide_AgentTiny/58.PNG)
 
 * **步骤4** （可选）开发者Portal提供了Profile文件的导出功能。
 
@@ -410,7 +410,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **开发插件（添加字段）**
 
-![](./meta/SDKGuide_AgentTiny/59.png)
+![](./meta/SDKGuide_AgentTiny/59.PNG)
 
 **开发插件（新建命令下发消息）**
 
@@ -418,7 +418,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **开发插件（添加字段）**
 
-![](./meta/SDKGuide_AgentTiny/64.png)
+![](./meta/SDKGuide_AgentTiny/64.PNG)
 
 编解码插件的开发，即定义：
 
@@ -440,7 +440,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **部署插件**
 
-![](./meta/SDKGuide_AgentTiny/71.png)
+![](./meta/SDKGuide_AgentTiny/71.PNG)
 
 * **步骤4** （可选）开发者Portal提供了编解码插件的下载功能。
 
@@ -468,7 +468,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 设备接入IoT平台后，IoT平台才可以对设备进行管理。设备接入平台时，需要保证IoT平台已经有对应应用，并且已经在该应用下注册了此设备。本节介绍端侧设备是如何通过端云互通组件与IoT平台实现对接的。首先给出端侧设备对接IoT平台的整体示意图。
 
-![](./meta/SDKGuide_AgentTiny/74.png)
+![](./meta/SDKGuide_AgentTiny/74.PNG)
 
 本小节将根据上图所示的流程，向开发者介绍终端设备是如何一步步地接入IoT平台，并进行数据上报与命令执行的。
 <h4 id="4.2.1">4.2.1 环境准备</h4>

@@ -375,7 +375,7 @@ IoT平台提供了Profile模板库，开发者可以根据自己需要，选择�
 
 **新建LightControl服务**
 
-![](./meta/SDKGuide_AgentTiny/58.png)
+![](./meta/SDKGuide_AgentTiny/58.PNG)
 
 * **步骤4** （可选）开发者Portal提供了Profile文件的导出功能。
 
@@ -409,7 +409,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **开发插件（添加字段）**
 
-![](./meta/SDKGuide_AgentTiny/59.png)
+![](./meta/SDKGuide_AgentTiny/59.PNG)
 
 **开发插件（新建命令下发消息）**
 
@@ -417,7 +417,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **开发插件（添加字段）**
 
-![](./meta/SDKGuide_AgentTiny/64.png)
+![](./meta/SDKGuide_AgentTiny/64.PNG)
 
 编解码插件的开发，即定义：
 
@@ -439,7 +439,7 @@ IoT平台提供了插件模板库，开发者可以根据自己需要，选择�
 
 **部署插件**
 
-![](./meta/SDKGuide_AgentTiny/71.png)
+![](./meta/SDKGuide_AgentTiny/71.PNG)
 
 * **步骤4** （可选）开发者Portal提供了编解码插件的下载功能。
 
