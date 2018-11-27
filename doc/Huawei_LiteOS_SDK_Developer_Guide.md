@@ -663,7 +663,7 @@ typedef struct _data_report_t
 #else
     device_info->endpoint_name = g_endpoint_name;
 #endif
-    device_info->manufacturer = "Agent_Tiny";
+    device_info->manufacturer = "Huawei";
 
     atiny_params = &g_atiny_params;
     atiny_params->server_params.binding = "UQ";
