@@ -1249,8 +1249,8 @@ static int8_t eth_init(struct netif* netif)
 现在需要设定相关配置参数。这些参数将作为入参传入```atiny_init()```以对LiteOS端云互通组件进行初始化。EP Name就是在云平台上注册设备时开发者设定的验证码，必须保证是唯一的；而PSK（预共享密钥）是用来加密传输的秘钥，agent_tiny_demo.c中示例如下：
 
 ```C
-#define DEFAULT_SERVER_IPV4 "192.168.0.5"
-char * g_endpoint_name = "44440003"; 
+#define DEFAULT_SERVER_IPV4 "139.159.140.34"  //OC
+char * g_endpoint_name = "44440003";   //与IoT平台上一致
 #ifdef WITH_DTLS 
 char *g_endpoint_name_s = "11110006"; 
 unsigned char g_psk_value[16] = {0xef,0xe8,0x18,0x45,0xa3,0x53,0xc1,0x3c,0x0c,0x89,0x92,0xb3,0x1d,0x6b,0x6a,0x96};  
